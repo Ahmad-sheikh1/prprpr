@@ -16,7 +16,20 @@ import VideoImage from "../assets/KLiC-Video-Editing-2023.jpg"
 import { Link } from 'react-router-dom'
 
 const Services = () => {
-    const [openornot, setopenornot] = useState(false);
+    const [openSkillId, setOpenSkillId] = useState(null);
+    const [rightdetailskill, setrightdetailskill] = useState(null);
+    console.log(rightdetailskill);
+    const toggleSkill = (skill) => {
+        if (openSkillId === skill.id) {
+            setOpenSkillId(null);
+            setrightdetailskill(null)
+        } else {
+            setOpenSkillId(skill.id);
+            setrightdetailskill(skill)
+        }
+    };
+
+
     useEffect(() => {
         AOS.init({ duration: 1000 });
     }, []);
@@ -114,8 +127,7 @@ const Services = () => {
                         <div key={skill.id}>
                             <div
                                 onClick={() => {
-                                    setDetailSkill(skill)
-                                    openornot === true ? setopenornot(false) : setopenornot(true)
+                                    toggleSkill(skill)
                                 }}
                                 className='cursor-pointer flex items-center gap-4 border-2 p-4'
                             >
@@ -123,17 +135,17 @@ const Services = () => {
                                 <h1 className='text-2xl text-white font-medium' data-aos="fade-up-left">{skill.Skill}</h1>
                             </div>
                             {/* Show Skill-exhibition on small screens when skill is clicked */}
-                            {openornot && DetailSkill && DetailSkill.id === skill.id && (
+                            {openSkillId === skill.id && rightdetailskill && (
                                 <div className="lg:hidden ">
                                     <div className="Skill-exhibition relative p-8 rounded">
                                         <div className="headings mb-12">
-                                            <h1 className="text-4xl font-bold mb-6 text-white" data-aos="fade-up-right">{DetailSkill.Skill}</h1>
-                                            <p className="text-2xl mb-4 text-gray-400" data-aos="fade-up-right">{DetailSkill.description}</p>
+                                            <h1 className="text-4xl font-bold mb-6 text-white" data-aos="fade-up-right">{rightdetailskill.Skill}</h1>
+                                            <p className="text-2xl mb-4 text-gray-400" data-aos="fade-up-right">{rightdetailskill.description}</p>
                                         </div>
                                         <div className="points flex justify-between gap-10 items-center ">
                                             <div className="sm:ml-0 md:ml-2 ">
                                                 <ul className='text-white text-xl font-bold flex flex-col gap-4 mb-12'>
-                                                    {DetailSkill.points.map((point, index) => (
+                                                    {rightdetailskill.points.map((point, index) => (
                                                         <li data-aos="fade-up-right" key={index} className='flex gap-5'>
                                                             <div className='p-4  h-2 border border-black rounded-full'></div>
                                                             {point}
@@ -141,12 +153,12 @@ const Services = () => {
                                                     ))}
                                                 </ul>
                                                 <button className="p-4 text-xl bg-purple-500 mr-4">
-                                                    <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to='/portfolio'>
+                                                    <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to='/contact'>
                                                         Explore More
                                                     </Link>
                                                 </button>
                                             </div>
-                                            <img className="h-32 w-40 " src={DetailSkill.Image} alt="Side Picture" />
+                                            <img className="h-32 w-40 " src={rightdetailskill.Image} alt="Side Picture" />
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +167,7 @@ const Services = () => {
                     ))}
                 </div>
             </div>
-        </React.Fragment>
+        </React.Fragment >
 
     )
 }
